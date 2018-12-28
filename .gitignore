@@ -1,0 +1,11 @@
+s.idea
+node_modules
+.env
+.DS_Store
+docker-compose.yml
+.scannerwork
+coverage
+
+/src
+/index.d.ts
+/index.js

@@ -1,0 +1,85 @@
+{
+  "name": "@power-cms/site-service",
+  "version": "0.1.0",
+  "description": "PowerCms - Site service",
+  "repository": "https://github.com/power-cms/site-service",
+  "scripts": {
+    "test": "jest --coverage --runInBand --forceExit --detectOpenHandles",
+    "coveralls": "jest --coverage --runInBand --forceExit --detectOpenHandles --coverageReporters=text-lcov | coveralls",
+    "type-check": "ls | grep -E \"src|\\.d\\.ts$|\\.js$\" | xargs rm -rf && tsc --noEmit",
+    "build": "ls | grep -E \"src|\\.d\\.ts$|\\.js$\" | xargs rm -rf && tsc",
+    "lint": "tslint -c tslint.json --project .",
+    "lint-fix": "tslint -c tslint.json 'lib/**/*.ts' --fix",
+    "prepare": "npm run build"
+  },
+  "author": {
+    "name": "Szymon Piecuch",
+    "email": "szymek.piecuch@gmail.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "*.d.ts",
+    "*.js"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@power-cms/common": "^0.5.1",
+    "awilix": "^4.0.1",
+    "joi": "^14.3.0",
+    "mongodb": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^23.3.5",
+    "@types/joi": "^13.6.0",
+    "@types/mongodb": "^3.1.10",
+    "coveralls": "^3.0.2",
+    "husky": "^1.2.1",
+    "jest": "^23.6.0",
+    "lint-staged": "^8.1.0",
+    "mongodb-memory-server": "^2.9.1",
+    "prettier": "1.15.3",
+    "ts-jest": "^23.10.3",
+    "ts-lint": "^4.5.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-sonarts": "^1.8.0",
+    "typescript": "^3.1.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "lib/**/*.ts",
+      "!lib/**/index.ts"
+    ],
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "testRegex": "\\.(test|spec)\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.test.json"
+      }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run type-check"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint-fix",
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
