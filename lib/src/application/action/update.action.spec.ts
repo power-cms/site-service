@@ -2,7 +2,6 @@ import { IContainer, IRemoteProcedure } from '@power-cms/common/application';
 import { ValidationException, Id } from '@power-cms/common/domain';
 import { validate } from '@power-cms/common/infrastructure';
 import { Db } from 'mongodb';
-import MongoMemoryServer from 'mongodb-memory-server';
 import { createContainer } from '../../infrastructure/awilix.container';
 import { SiteView } from '../query/site.view';
 import { UpdateAction } from './update.action';
@@ -27,16 +26,11 @@ const updateData = {
 
 describe('Update action', () => {
   let container: IContainer;
-  let mongo: MongoMemoryServer;
   let id: string;
   let remoteProcedure: IRemoteProcedure;
 
   beforeAll(async () => {
-    mongo = new MongoMemoryServer();
     remoteProcedure = new RemoteProcedureMock();
-    process.env.DB_HOST = 'localhost';
-    process.env.DB_PORT = String(await mongo.getPort());
-    process.env.DB_DATABASE = await mongo.getDbName();
 
     container = await createContainer(undefined, remoteProcedure);
   });

@@ -1,7 +1,6 @@
 import { IContainer, IRemoteProcedure } from '@power-cms/common/application';
 import { Id } from '@power-cms/common/domain';
 import { Db } from 'mongodb';
-import MongoMemoryServer from 'mongodb-memory-server';
 import { SiteNotFoundException } from '../../domain/exception/site-not-found.exception';
 import { createContainer } from '../../infrastructure/awilix.container';
 import { DeleteAction } from './delete.action';
@@ -21,16 +20,11 @@ const properData = {
 
 describe('Delete action', () => {
   let container: IContainer;
-  let mongo: MongoMemoryServer;
   let id: string;
   let remoteProcedure: IRemoteProcedure;
 
   beforeAll(async () => {
-    mongo = new MongoMemoryServer();
     remoteProcedure = new RemoteProcedureMock();
-    process.env.DB_HOST = 'localhost';
-    process.env.DB_PORT = String(await mongo.getPort());
-    process.env.DB_DATABASE = await mongo.getDbName();
 
     container = await createContainer(undefined, remoteProcedure);
   });

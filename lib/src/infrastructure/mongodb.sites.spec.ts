@@ -1,7 +1,6 @@
 import { IContainer } from '@power-cms/common/application';
 import { Id, PersistanceException } from '@power-cms/common/src/domain';
 import { Collection, Db } from 'mongodb';
-import MongoMemoryServer from 'mongodb-memory-server';
 import { Site } from '../domain/site';
 import { ISiteRepository } from '../domain/site.repository';
 import { SiteType } from '../domain/site.type';
@@ -17,14 +16,8 @@ const properData = new Site(Id.generate(), SiteType.Text, 'title', 'content', 'u
 
 describe('Mongodb handler', () => {
   let container: IContainer;
-  let mongo: MongoMemoryServer;
 
   beforeAll(async () => {
-    mongo = new MongoMemoryServer();
-    process.env.DB_HOST = 'localhost';
-    process.env.DB_PORT = String(await mongo.getPort());
-    process.env.DB_DATABASE = await mongo.getDbName();
-
     container = await createContainer();
   });
 

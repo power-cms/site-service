@@ -64,6 +64,7 @@
       "json",
       "node"
     ],
+    "testEnvironment": "./jest.environment.ts",
     "globals": {
       "ts-jest": {
         "tsConfig": "tsconfig.test.json"
