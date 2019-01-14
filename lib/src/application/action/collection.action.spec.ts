@@ -1,7 +1,6 @@
 import { IContainer, IPaginationView } from '@power-cms/common/application';
 import { Id } from '@power-cms/common/domain';
 import { Db } from 'mongodb';
-import MongoMemoryServer from 'mongodb-memory-server';
 import { createContainer } from '../../infrastructure/awilix.container';
 import { CreateSiteCommandHandler } from '../command/create-site.command-handler';
 import { SiteView } from '../query/site.view';
@@ -16,14 +15,8 @@ const properData = {
 
 describe('Collection action', () => {
   let container: IContainer;
-  let mongo: MongoMemoryServer;
 
   beforeAll(async () => {
-    mongo = new MongoMemoryServer();
-    process.env.DB_HOST = 'localhost';
-    process.env.DB_PORT = String(await mongo.getPort());
-    process.env.DB_DATABASE = await mongo.getDbName();
-
     container = await createContainer();
   });
 
@@ -41,7 +34,7 @@ describe('Collection action', () => {
 
   it('Fetches site collection', async () => {
     const action = container.resolve<CollectionAction>('siteCollectionAction');
-    const result: IPaginationView<SiteView> = await action.handle({});
+    const result: IPaginationView<SiteView> = await action.execute({});
     expect(result.data).toBeInstanceOf(Array);
     expect(result.data.length).toBe(2);
     expect(result.page).toBe(1);

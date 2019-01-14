@@ -1,7 +1,7 @@
 {
   "name": "@power-cms/site-service",
-  "version": "0.1.0",
-  "description": "PowerCms - Site service",
+  "version": "0.2.0",
+  "description": "PowerCMS - Site service",
   "repository": "https://github.com/power-cms/site-service",
   "scripts": {
     "test": "jest --coverage --runInBand --forceExit --detectOpenHandles",
@@ -26,7 +26,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@power-cms/common": "^0.5.1",
+    "@power-cms/common": "^0.6.0",
     "awilix": "^4.0.1",
     "joi": "^14.3.0",
     "mongodb": "^3.1.10"
@@ -64,6 +64,7 @@
       "json",
       "node"
     ],
+    "testEnvironment": "./jest.environment.ts",
     "globals": {
       "ts-jest": {
         "tsConfig": "tsconfig.test.json"

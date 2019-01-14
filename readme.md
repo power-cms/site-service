@@ -1,5 +1,8 @@
-# :rocket: PowerCms - Site service
+![PowerCms](docs/logo-small.png)
 
+# PowerCMS - Site service
+
+[![NPM Version](https://img.shields.io/npm/v/@power-cms/site-service.svg)](https://www.npmjs.com/package/@power-cms/site-service)
 [![Build Status](https://travis-ci.com/power-cms/site-service.svg?branch=master)](https://travis-ci.com/power-cms/site-service)
 [![Coverage Status](https://coveralls.io/repos/github/power-cms/site-service/badge.svg)](https://coveralls.io/github/power-cms/site-service)
 

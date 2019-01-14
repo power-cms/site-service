@@ -2,7 +2,6 @@ import { IContainer, IRemoteProcedure } from '@power-cms/common/application';
 import { ValidationException, Id } from '@power-cms/common/domain';
 import { validate } from '@power-cms/common/infrastructure';
 import { Db } from 'mongodb';
-import MongoMemoryServer from 'mongodb-memory-server';
 import { createContainer } from '../../infrastructure/awilix.container';
 import { SiteView } from '../query/site.view';
 import { UpdateAction } from './update.action';
@@ -27,29 +26,24 @@ const updateData = {
 
 describe('Update action', () => {
   let container: IContainer;
-  let mongo: MongoMemoryServer;
   let id: string;
   let remoteProcedure: IRemoteProcedure;
 
   beforeAll(async () => {
-    mongo = new MongoMemoryServer();
     remoteProcedure = new RemoteProcedureMock();
-    process.env.DB_HOST = 'localhost';
-    process.env.DB_PORT = String(await mongo.getPort());
-    process.env.DB_DATABASE = await mongo.getDbName();
 
     container = await createContainer(undefined, remoteProcedure);
   });
 
   beforeEach(async () => {
     (await container.resolve<Db>('db')).dropDatabase();
-    const site = await container.resolve<CreateAction>('siteCreateAction').handle({ data: properData });
+    const site = await container.resolve<CreateAction>('siteCreateAction').execute({ data: properData });
     id = site.id;
   });
 
   it('Updates site', async () => {
     const action = container.resolve<UpdateAction>('siteUpdateAction');
-    const result: SiteView = await action.handle({ data: updateData, params: { id } });
+    const result: SiteView = await action.execute({ data: updateData, params: { id } });
 
     expect(JSON.parse(JSON.stringify(result))).toEqual({ ...properData, ...updateData, id });
   });

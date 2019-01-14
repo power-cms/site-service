@@ -1,6 +1,15 @@
-import { Acl, IActionHandler, IContainer, ILogger, IRemoteProcedure, IService } from '@power-cms/common/application';
+import {
+  Acl,
+  CommandHandlerLogger,
+  IActionHandler,
+  IContainer,
+  ILogger,
+  IRemoteProcedure,
+  IService,
+} from '@power-cms/common/application';
 import {
   createDatabaseConnection,
+  getDecorator,
   MongoConnection,
   MongodbPaginator,
   NullLogger,
@@ -25,30 +34,32 @@ export const createContainer = (logger?: ILogger, remoteProcedure?: IRemoteProce
     injectionMode: awilix.InjectionMode.CLASSIC,
   });
 
+  const decorator = getDecorator(container);
+
   container.register({
     logger: awilix.asValue<ILogger>(logger || new NullLogger()),
     remoteProcedure: awilix.asValue<IRemoteProcedure>(remoteProcedure || new NullRemoteProcedure()),
-    acl: awilix.asClass<Acl>(Acl),
+    acl: awilix.asClass<Acl>(Acl).singleton(),
 
     db: awilix.asValue<MongoConnection>(createDatabaseConnection()),
 
-    paginator: awilix.asClass(MongodbPaginator),
+    paginator: awilix.asClass(MongodbPaginator).singleton(),
 
-    siteRepository: awilix.asClass<ISiteRepository>(MongodbSites),
-    siteQuery: awilix.asClass<ISiteQuery>(MongodbSites),
+    siteRepository: awilix.asClass<ISiteRepository>(MongodbSites).singleton(),
+    siteQuery: awilix.asClass<ISiteQuery>(MongodbSites).singleton(),
 
-    createSiteHandler: awilix.asClass<CreateSiteCommandHandler>(CreateSiteCommandHandler),
-    updateSiteHandler: awilix.asClass<UpdateSiteCommandHandler>(UpdateSiteCommandHandler),
-    deleteSiteHandler: awilix.asClass<DeleteSiteCommandHandler>(DeleteSiteCommandHandler),
+    siteCreateAction: awilix.asClass<CreateAction>(CreateAction).singleton(),
+    siteReadAction: awilix.asClass<ReadAction>(ReadAction).singleton(),
+    siteUpdateAction: awilix.asClass<UpdateAction>(UpdateAction).singleton(),
+    siteDeleteAction: awilix.asClass<DeleteAction>(DeleteAction).singleton(),
+    siteCollectionAction: awilix.asClass<CollectionAction>(CollectionAction).singleton(),
 
-    siteCreateAction: awilix.asClass<CreateAction>(CreateAction),
-    siteReadAction: awilix.asClass<ReadAction>(ReadAction),
-    siteUpdateAction: awilix.asClass<UpdateAction>(UpdateAction),
-    siteDeleteAction: awilix.asClass<DeleteAction>(DeleteAction),
-    siteCollectionAction: awilix.asClass<CollectionAction>(CollectionAction),
-
-    service: awilix.asClass<IService>(SiteService),
+    service: awilix.asClass<IService>(SiteService).singleton(),
   });
+
+  decorator.decorate('createSiteHandler', CreateSiteCommandHandler, CommandHandlerLogger);
+  decorator.decorate('updateSiteHandler', UpdateSiteCommandHandler, CommandHandlerLogger);
+  decorator.decorate('deleteSiteHandler', DeleteSiteCommandHandler, CommandHandlerLogger);
 
   container.register({
     actions: awilix.asValue<IActionHandler[]>([
