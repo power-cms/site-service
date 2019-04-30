@@ -25,6 +25,7 @@ npm install --save @power-cms/site-service
 ## Required services
 
 * [Auth service](https://github.com/power-cms/auth-service)
+* [Site service](https://github.com/power-cms/site-service)
 
 ## How to test?
 

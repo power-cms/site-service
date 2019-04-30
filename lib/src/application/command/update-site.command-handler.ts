@@ -6,7 +6,7 @@ import { SiteType } from '../../domain/site.type';
 import { IUpdateSiteCommand } from './update-site.command';
 
 export class UpdateSiteCommandHandler extends BaseUpdateCommandHandler<Site, IUpdateSiteCommand> {
-  constructor(private siteRepository: ISiteRepository) {
+  constructor(siteRepository: ISiteRepository) {
     super(siteRepository);
   }
 

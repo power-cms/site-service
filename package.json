@@ -1,6 +1,6 @@
 {
   "name": "@power-cms/site-service",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "PowerCMS - Site service",
   "repository": "https://github.com/power-cms/site-service",
   "scripts": {
